@@ -1,0 +1,120 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Microsoft YaHei", sans-serif;
+}
+body {
+    background: #f5f7fa;
+    padding: 20px;
+}
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+.title {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 16px;
+    color: #333;
+}
+.progress {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #666;
+}
+.question-box {
+    padding: 16px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    min-height: 120px;
+}
+.q-title {
+    font-size: 16px;
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.option {
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.option:hover {
+    background: #f0f7ff;
+    border-color: #409eff;
+}
+.option.selected {
+    background: #e8f3ff;
+    border-color: #409eff;
+}
+.btn-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    background: #409eff;
+    color: white;
+    cursor: pointer;
+}
+button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+.jump {
+    margin: 10px 0;
+}
+input[type=number] {
+    width: 70px;
+    padding: 6px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+.score-box {
+    margin-top: 20px;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    display: none;
+}
+.score-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+.score-item {
+    margin: 6px 0;
+}
+.total {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.level-text {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 8px;
+}
+.level-rula { color: #e63946; }    /* 拉 */
+.level-npc { color: #777; }        /* NPC */
+.level-hang { color: #28a745; }    /* 夯 */
+.level-ding { color: #007bff; }    /* 顶尖 */
+.level-top { color: #ffc107; }     /* 人上人 */
