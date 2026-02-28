@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>综合技术能力测试 - 100题</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Microsoft YaHei", sans-serif;
+    }
+    body {
+      background: #f5f7fa;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+    .title {
+      text-align: center;
+      font-size: 22px;
+      margin-bottom: 16px;
+      color: #333;
+    }
+    .progress {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: #666;
+    }
+    .question-box {
+      padding: 16px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      min-height: 120px;
+    }
+    .q-title {
+      font-size: 16px;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .option {
+      padding: 10px 14px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .option:hover {
+      background: #f0f7ff;
+      border-color: #409eff;
+    }
+    .option.selected {
+      background: #e8f3ff;
+      border-color: #409eff;
+    }
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      background: #409eff;
+      color: white;
+      cursor: pointer;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .jump {
+      margin: 10px 0;
+    }
+    input[type=number] {
+      width: 70px;
+      padding: 6px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+    .score-box {
+      margin-top: 20px;
+      padding: 16px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      display: none;
+    }
+    .score-title {
+      font-size: 18px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .score-item {
+      margin: 6px 0;
+    }
+    .total {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .level-text {
+      font-size: 22px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+    .level-rula { color: #e63946; }    /* 拉 */
+    .level-npc { color: #777; }        /* NPC */
+    .level-hang { color: #28a745; }    /* 夯 */
+    .level-ding { color: #007bff; }    /* 顶尖 */
+    .level-top { color: #ffc107; }     /* 人上人 */
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="title">综合技术能力测试（100题）</div>
+  <div class="progress">
+    <span>当前题号：<span id="current-num">1</span>/100</span>
+    <span>已完成：<span id="done-count">0</span>/100</span>
+  </div>
+
+  <div class="question-box">
+    <div class="q-title" id="question-title"></div>
+    <div class="options" id="options"></div>
+  </div>
+
+  <div class="btn-group">
+    <button id="prev">上一题</button>
+    <button id="next">下一题</button>
+    <button id="submit-all">交卷评分</button>
+  </div>
+
+  <div class="jump">
+    跳转到题号：
+    <input type="number" id="jump-input" min="1" max="100">
+    <button id="jump-btn">跳转</button>
+  </div>
+
+  <div class="score-box" id="score-box">
+    <div class="score-title">你的得分</div>
+    <div class="score-item">系统知识：<span id="score-system"></span>/20</div>
+    <div class="score-item">网络知识：<span id="score-network"></span>/20</div>
+    <div class="score-item">编程基础：<span id="score-code"></span>/20</div>
+    <div class="score-item">底层原理：<span id="score-low"></span>/20</div>
+    <div class="score-item">前端技术：<span id="score-front"></span>/20</div>
+    <div class="total">总分：<span id="score-total"></span>/100</div>
+    <div class="level-text" id="level-text"></div>
+  </div>
+</div>
+
+<script>
+  const questions = [
+  // 系统知识 (system) 1-20
+  { "type": "system", "title": "Linux 中查看当前所有环境变量的命令是？", "options": ["set", "export", "env", "echo $PATH"], "answer": 2 },
+  { "type": "system", "title": "在 Linux 中，给脚本增加可执行权限的命令是？", "options": ["chmod +x", "chmod 755", "chown +x", "A和B都对"], "answer": 3 },
+  { "type": "system", "title": "Windows 系统中，用于查看路由表的命令是？", "options": ["route print", "netstat -r", "tracert", "A和B都对"], "answer": 3 },
+  { "type": "system", "title": "Linux 系统中，'top' 命令下按哪个键可以按内存排序？", "options": ["P", "M", "T", "N"], "answer": 1 },
+  { "type": "system", "title": "下列哪个信号（Signal）用于强制杀死进程且不可被阻塞？", "options": ["SIGTERM (15)", "SIGINT (2)", "SIGKILL (9)", "SIGSTOP (19)"], "answer": 2 },
+  { "type": "system", "title": "Linux 中，哪个文件存储了本地主机的静态域名解析？", "options": ["/etc/resolv.conf", "/etc/hosts", "/etc/networks", "/etc/hostname"], "answer": 1 },
+  { "type": "system", "title": "Docker 容器技术的核心基础是 Linux 内核的？", "options": ["Cgroups 和 Namespaces", "KVM", "Xen", "Hyper-V"], "answer": 0 },
+  { "type": "system", "title": "在 Vim 中，撤销上一步操作的快捷键是？", "options": ["Ctrl+Z", "u", "Ctrl+U", "x"], "answer": 1 },
+  { "type": "system", "title": "Linux 系统的硬链接（Hard Link）不能指向？", "options": ["目录", "空文件", "跨文件系统的文件", "A和C"], "answer": 3 },
+  { "type": "system", "title": "Windows 的 PowerShell 中，查看文件内容的命令等价物是？", "options": ["cat", "type", "Get-Content", "以上都是"], "answer": 3 },
+  { "type": "system", "title": "在 Linux 中，如何查看磁盘分区的 IO 占用情况？", "options": ["df -h", "iostat", "free", "du -sh"], "answer": 1 },
+  { "type": "system", "title": "系统调用（System Call）发生在？", "options": ["用户态向内核态切换", "内核态向用户态切换", "硬件中断", "内存溢出"], "answer": 0 },
+  { "type": "system", "title": "僵尸进程（Zombie Process）产生的原因是？", "options": ["内存溢出", "子进程先结束但父进程未回收", "CPU占用过高", "父进程异常退出"], "answer": 1 },
+  { "type": "system", "title": "Linux 中查看最近登录日志的命令是？", "options": ["history", "last", "who", "tail /var/log/messages"], "answer": 1 },
+  { "type": "system", "title": "swap 分区的作用是？", "options": ["加速CPU", "内存不足时暂存硬盘", "加密存储", "存放引导程序"], "answer": 1 },
+  { "type": "system", "title": "在 Bash 中，'2>&1' 的含义是？", "options": ["将标准错误重定向到标准输出", "将标准输出重定向到标准错误", "忽略错误", "后台执行"], "answer": 0 },
+  { "type": "system", "title": "crontab 任务中 '*/5 * * * *' 代表？", "options": ["每5小时执行一次", "每5分钟执行一次", "每天5点执行", "每月5号执行"], "answer": 1 },
+  { "type": "system", "title": "Windows 远程桌面的协议是？", "options": ["SSH", "VNC", "RDP", "Telnet"], "answer": 2 },
+  { "type": "system", "title": "Linux 权限 'drwxr-xr-x' 转换为数字是？", "options": ["777", "755", "644", "700"], "answer": 1 },
+  { "type": "system", "title": "管道符 '|' 的作用是？", "options": ["连接两个命令，前者的输出作为后者的输入", "逻辑或运算", "将命令后台运行", "过滤敏感词"], "answer": 0 },
+
+  // 网络知识 (network) 21-40
+  { "type": "network", "title": "HTTP 状态码 301 代表？", "options": ["临时重定向", "永久重定向", "禁止访问", "请求成功"], "answer": 1 },
+  { "type": "network", "title": "TCP 建立连接的三次握手中，第二次握手发送的是？", "options": ["SYN", "ACK", "SYN+ACK", "FIN"], "answer": 2 },
+  { "type": "network", "title": "DNS 协议主要使用传输层的哪个协议？", "options": ["TCP", "UDP", "ICMP", "SCTP"], "answer": 1 },
+  { "type": "network", "title": "子网掩码 255.255.255.224 对应的 CIDR 是？", "options": ["/24", "/26", "/27", "/28"], "answer": 2 },
+  { "type": "network", "title": "IPv6 地址的长度是多少位？", "options": ["64", "128", "256", "512"], "answer": 1 },
+  { "type": "network", "title": "TLS/SSL 握手中，对称加密密钥是在哪一步产生的？", "options": ["客户端问候", "服务器确认", "握手完成后由随机数协商生成", "证书自带"], "answer": 2 },
+  { "type": "network", "title": "OSI 七层模型中，IP 协议工作在哪一层？", "options": ["数据链路层", "网络层", "传输层", "应用层"], "answer": 1 },
+  { "type": "network", "title": "HTTP 2.0 相比 1.1 的核心优化不包括？", "options": ["多路复用", "头部压缩", "服务器推送", "不再支持文本传输"], "answer": 3 },
+  { "type": "network", "title": "ARP 协议的作用是？", "options": ["IP转MAC", "MAC转IP", "域名转IP", "端口转发"], "answer": 0 },
+  { "type": "network", "title": "一个 TCP 连接的五元组不包含哪个？", "options": ["源IP", "目的端口", "MAC地址", "协议类型"], "answer": 2 },
+  { "type": "network", "title": "ICMP 协议常用于哪个工具？", "options": ["ssh", "ping", "telnet", "ftp"], "answer": 1 },
+  { "type": "network", "title": "NAT 技术主要解决的问题是？", "options": ["带宽不足", "IPv4地址短缺", "数据加密", "网络路由选择"], "answer": 1 },
+  { "type": "network", "title": "交换机通过哪种表来决定数据包转发？", "options": ["路由表", "ARP表", "MAC地址表", "端口对照表"], "answer": 2 },
+  { "type": "network", "title": "BGP 协议属于哪种路由协议？", "options": ["内部网关协议 (IGP)", "外部网关协议 (EGP)", "链路状态协议", "应用层协议"], "answer": 1 },
+  { "type": "network", "title": "下列哪个是常用的反向代理服务器？", "options": ["Nginx", "Apache Tomcat", "Redis", "MySQL"], "answer": 0 },
+  { "type": "network", "title": "MTU 的默认值通常是？", "options": ["1460", "1500", "576", "65535"], "answer": 1 },
+  { "type": "network", "title": "CDN 技术的核心原理是？", "options": ["增加带宽", "负载均衡", "内容缓存与就近访问", "加密传输"], "answer": 2 },
+  { "type": "network", "title": "DHCP 协议的作用是？", "options": ["分配MAC地址", "动态分配IP地址", "解析域名", "文件传输"], "answer": 1 },
+  { "type": "network", "title": "跨域请求中，'预检'请求使用的是哪种 HTTP 方法？", "options": ["GET", "HEAD", "OPTIONS", "POST"], "answer": 2 },
+  { "type": "network", "title": "Wireshark 是一个？", "options": ["防火墙", "抓包分析工具", "漏洞扫描器", "网关"], "answer": 1 },
+
+  // 编程基础 (code) 41-60
+  { "type": "code", "title": "在大多数语言中，'1' + 1 的结果（若支持隐式转换）可能是？", "options": ["2", "11", "报错", "以上都有可能"], "answer": 3 },
+  { "type": "code", "title": "什么是递归的必要条件？", "options": ["循环体", "终止条件", "全局变量", "多线程"], "answer": 1 },
+  { "type": "code", "title": "二分查找的时间复杂度是？", "options": ["O(n)", "O(n log n)", "O(log n)", "O(1)"], "answer": 2 },
+  { "type": "code", "title": "栈（Stack）的数据结构特点是？", "options": ["先进先出", "先进后出", "随机存取", "无序"], "answer": 1 },
+  { "type": "code", "title": "面向对象中，子类覆盖父类方法称为？", "options": ["重载 (Overload)", "重写 (Override)", "封装", "多态"], "answer": 1 },
+  { "type": "code", "title": "代码版本管理工具 Git 中，'git pull' 等于？", "options": ["fetch + merge", "fetch + push", "commit + push", "clone + merge"], "answer": 0 },
+  { "type": "code", "title": "什么是闭包（Closure）？", "options": ["加密的代码块", "有权访问另一个函数作用域变量的函数", "递归函数", "私有类"], "answer": 1 },
+  { "type": "code", "title": "下列哪种排序算法在最坏情况下性能最差？", "options": ["快速排序", "归并排序", "堆排序", "冒泡排序"], "answer": 3 },
+  { "type": "code", "title": "单例模式（Singleton）的核心目的是？", "options": ["加速运行", "保证一个类只有一个实例", "提高扩展性", "代码复用"], "answer": 1 },
+  { "type": "code", "title": "数据库事务的 ACID 特性中，'C' 代表？", "options": ["原子性", "一致性", "隔离性", "持久性"], "answer": 1 },
+  { "type": "code", "title": "如何防止 SQL 注入？", "options": ["前端验证", "参数化查询（预编译）", "增加防火墙", "隐藏数据库IP"], "answer": 1 },
+  { "type": "code", "title": "RESTful 架构中，删除资源的 HTTP 方法是？", "options": ["POST", "GET", "REMOVE", "DELETE"], "answer": 3 },
+  { "type": "code", "title": "正则表达式中，'^' 符号的含义是？", "options": ["匹配结尾", "匹配开头", "非运算", "通配符"], "answer": 1 },
+  { "type": "code", "title": "Python 中的 'yield' 关键字用于？", "options": ["定义装饰器", "定义生成器", "强制退出", "报错"], "answer": 1 },
+  { "type": "code", "title": "JavaScript 的事件循环中，Promise.then 属于？", "options": ["宏任务", "微任务", "同步任务", "渲染任务"], "answer": 1 },
+  { "type": "code", "title": "下列哪个是哈希（Hash）冲突的解决办法？", "options": ["开放定址法", "链地址法", "公共溢出区", "以上都是"], "answer": 3 },
+  { "type": "code", "title": "单元测试的主要目的是？", "options": ["测试整个系统流程", "验证最小代码单元的逻辑正确性", "测试UI美观度", "压力测试"], "answer": 1 },
+  { "type": "code", "title": "代码中 '0.1 + 0.2 !== 0.3' 的主因是？", "options": ["进制转换误差", "IEEE 754 浮点数表示限制", "CPU算力不足", "编译器Bug"], "answer": 1 },
+  { "type": "code", "title": "什么是静态类型语言？", "options": ["运行前确定变量类型的语言", "不能修改变量值的语言", "没有对象的语言", "只有全局变量的语言"], "answer": 0 },
+  { "type": "code", "title": "哪个算法常用于求图的最短路径？", "options": ["Dijkstra", "DFS", "Binary Search", "KMP"], "answer": 0 },
+
+  // 底层原理 (low) 61-80
+  { "type": "low", "title": "CPU 调度中的“时间片循环”主要解决什么问题？", "options": ["内存不足", "多任务公平性", "功耗过高", "指令并行"], "answer": 1 },
+  { "type": "low", "title": "小端序（Little-endian）是指？", "options": ["高位字节存放在低地址", "低位字节存放在低地址", "随机存放", "按字符长度存放"], "answer": 1 },
+  { "type": "low", "title": "磁盘阵列 RAID 0 的主要优势是？", "options": ["数据安全", "容错能力", "读写速度", "存储容量"], "answer": 2 },
+  { "type": "low", "title": "寄存器、L1 Cache、内存、硬盘中，访问速度最慢的是？", "options": ["L1 Cache", "寄存器", "内存", "硬盘"], "answer": 3 },
+  { "type": "low", "title": "虚拟内存的实现基础是？", "options": ["分页/分段机制", "多核CPU", "RAID技术", "DMA"], "answer": 0 },
+  { "type": "low", "title": "主板上的 CMOS 电池作用是？", "options": ["给CPU供电", "保存BIOS设置和系统时间", "加速启动", "防止静电"], "answer": 1 },
+  { "type": "low", "title": "什么是流水线（Pipeline）技术？", "options": ["并行执行多条指令的不同阶段", "一次执行多条指令", "减少指令数量", "增加缓存命中率"], "answer": 0 },
+  { "type": "low", "title": "16进制数 0x20 转换为 10 进制是？", "options": ["20", "16", "32", "64"], "answer": 2 },
+  { "type": "low", "title": "在汇编中，MOV 指令的作用是？", "options": ["删除数据", "数据传送", "算术运算", "逻辑跳转"], "answer": 1 },
+  { "type": "low", "title": "显卡的流处理器数量主要影响？", "options": ["渲染并行处理能力", "显存容量", "显示器接口", "光驱速度"], "answer": 0 },
+  { "type": "low", "title": "冯·诺依曼架构的核心特点是？", "options": ["存储程序控制", "多线程", "图形化界面", "网络互连"], "answer": 0 },
+  { "type": "low", "title": "编译器和解释器的区别在于？", "options": ["前者生成目标代码，后者直接执行源码", "前者慢后者快", "前者只处理C语言", "没有区别"], "answer": 0 },
+  { "type": "low", "title": "什么是“缺页中断”？", "options": ["打印机没纸了", "所需的内存页不在物理内存中", "代码行数太多", "屏幕黑屏"], "answer": 1 },
+  { "type": "low", "title": "DMA（直接内存存取）的作用是？", "options": ["加速CPU计算", "外设不通过CPU直接与内存交换数据", "管理虚拟内存", "加密磁盘"], "answer": 1 },
+  { "type": "low", "title": "指令周期是指？", "options": ["CPU频率", "执行一条指令所需的时间", "时钟脉冲", "操作系统重启时间"], "answer": 1 },
+  { "type": "low", "title": "堆（Heap）和栈（Stack）的区别是？", "options": ["栈由编译器自动管理，堆由程序员手动申请释放", "堆快栈慢", "栈空间比堆大", "一样"], "answer": 0 },
+  { "type": "low", "title": "什么是“超频”？", "options": ["增加显存", "人为提高硬件工作主频", "安装更多风扇", "升级系统"], "answer": 1 },
+  { "type": "low", "title": "北桥芯片（旧架构）主要负责？", "options": ["连接CPU与内存/显卡", "连接键盘鼠标", "管理电源", "管理声卡"], "answer": 0 },
+  { "type": "low", "title": "GPU 相比 CPU 的优势在于？", "options": ["复杂的逻辑控制", "大规模并行简单计算", "单线程速度", "通用性"], "answer": 1 },
+  { "type": "low", "title": "二进制 1011 对应的十进制是？", "options": ["9", "10", "11", "13"], "answer": 2 },
+
+  // 前端技术 (front) 81-100
+  { "type": "front", "title": "CSS 中 box-sizing: border-box 的作用是？", "options": ["宽高包含边框和内边距", "宽高不含内边距", "自动换行", "设置圆角"], "answer": 0 },
+  { "type": "front", "title": "浏览器中，阻止事件冒泡的方法是？", "options": ["preventDefault()", "stopPropagation()", "stopImmediatePropagation()", "return false"], "answer": 1 },
+  { "type": "front", "title": "下列哪个不是 CSS 的盒模型组成部分？", "options": ["Padding", "Margin", "Border", "Script"], "answer": 3 },
+  { "type": "front", "title": "React 中的 'Virtual DOM' 核心优势是？", "options": ["直接操作硬件", "减少真实的 DOM 操作次数", "完全取代 HTML", "自动SEO"], "answer": 1 },
+  { "type": "front", "title": "现代前端框架中，'双向数据绑定' 意味着？", "options": ["UI和数据同步更新", "两个数据库同步", "前后端代码合并", "两个页面跳转"], "answer": 0 },
+  { "type": "front", "title": "HTTP 缓存中，Etag 的作用是？", "options": ["设置过期时间", "通过文件指纹校验文件是否修改", "强制不缓存", "加密请求"], "answer": 1 },
+  { "type": "front", "title": "前端 SEO 优化的常用手段不包括？", "options": ["语义化标签", "服务端渲染(SSR)", "TDK配置", "把所有文字存为图片"], "answer": 3 },
+  { "type": "front", "title": "TypeScript 相比 JavaScript 的核心提升是？", "options": ["运行更快", "增加了静态类型检查", "不需要浏览器就能运行", "代码量更少"], "answer": 1 },
+  { "type": "front", "title": "Webpack 中的 'Loader' 作用是？", "options": ["压缩图片", "转换非 JS 文件（如 CSS/TS）", "代码分割", "热更新"], "answer": 1 },
+  { "type": "front", "title": "CSS Flex 布局中，'justify-content' 用于控制？", "options": ["垂直对齐", "主轴方向的对齐方式", "换行方式", "元素比例"], "answer": 1 },
+  { "type": "front", "title": "SessionStorage 和 LocalStorage 的主要区别是？", "options": ["前者在窗口关闭后失效", "后者存得更多", "前者只存数字", "没有区别"], "answer": 0 },
+  { "type": "front", "title": "什么是“重排/回流”（Reflow）？", "options": ["改变颜色", "DOM结构或几何属性改变导致页面重新布局", "点击按钮", "图片加载"], "answer": 1 },
+  { "type": "front", "title": "什么是单页面应用（SPA）？", "options": ["只有一个 HTML 文件的应用", "没有后台的应用", "专门给手机用的应用", "不需要网络的应用"], "answer": 0 },
+  { "type": "front", "title": "JS 中的 'this' 指向取决于？", "options": ["定义的位置", "调用的方式", "代码行数", "浏览器版本"], "answer": 1 },
+  { "type": "front", "title": "Canvas 和 SVG 的主要区别是？", "options": ["Canvas是位图，SVG是矢量图", "Canvas更好学", "SVG已经过时了", "Canvas不需要硬件加速"], "answer": 0 },
+  { "type": "front", "title": "现代浏览器中，哪个 API 用于发起异步请求替代 XMLHttpRequest？", "options": ["Fetch", "Axios", "AJAX", "Socket"], "answer": 0 },
+  { "type": "front", "title": "CSS 预处理器（如 Sass/Less）解决了什么问题？", "options": ["浏览器兼容性", "CSS 缺乏变量、嵌套等逻辑能力", "加载速度", "安全问题"], "answer": 1 },
+  { "type": "front", "title": "WebWorker 的作用是？", "options": ["让 JS 实现多线程后台计算", "操作 DOM", "加速页面渲染", "拦截网络请求"], "answer": 0 },
+  { "type": "front", "title": "什么是“防抖”（Debounce）？", "options": ["频繁触发时只执行最后一次", "限制单位时间内只执行一次", "增加抖动特效", "防止点击"], "answer": 0 },
+  { "type": "front", "title": "Babel 在前端工程中的主要作用是？", "options": ["打包文件", "将 ES6+ 代码转换为 ES5 兼容代码", "压缩代码", "代码混淆"], "answer": 1 }
+];
+
+  const userAnswers = Array(100).fill(null);
+  let current = 0;
+
+  const elCurrentNum = document.getElementById('current-num');
+  const elDoneCount = document.getElementById('done-count');
+  const elQuestionTitle = document.getElementById('question-title');
+  const elOptions = document.getElementById('options');
+  const elPrev = document.getElementById('prev');
+  const elNext = document.getElementById('next');
+  const elSubmitAll = document.getElementById('submit-all');
+  const elJumpInput = document.getElementById('jump-input');
+  const elJumpBtn = document.getElementById('jump-btn');
+  const elScoreBox = document.getElementById('score-box');
+  const elLevelText = document.getElementById('level-text');
+
+  function render() {
+    const q = questions[current];
+    elCurrentNum.textContent = current + 1;
+    elQuestionTitle.textContent = `${current+1}. ${q.title}`;
+    elOptions.innerHTML = '';
+
+    q.options.forEach((opt, i) => {
+      const div = document.createElement('div');
+      div.className = 'option ' + (userAnswers[current] === i ? 'selected' : '');
+      div.textContent = `${String.fromCharCode(65+i)}. ${opt}`;
+      div.onclick = () => {
+        userAnswers[current] = i;
+        render();
+        updateDoneCount();
+      };
+      elOptions.appendChild(div);
+    });
+
+    elPrev.disabled = current === 0;
+    updateDoneCount();
+  }
+
+  function updateDoneCount() {
+    const c = userAnswers.filter(x => x !== null).length;
+    elDoneCount.textContent = c;
+  }
+
+  function calcScore() {
+    let system = 0, network = 0, code = 0, low = 0, front = 0;
+    questions.forEach((q, i) => {
+      if (userAnswers[i] === q.answer) {
+        switch(q.type) {
+          case 'system': system++; break;
+          case 'network': network++; break;
+          case 'code': code++; break;
+          case 'low': low++; break;
+          case 'front': front++; break;
+        }
+      }
+    });
+    const total = system + network + code + low + front;
+
+    let level = '';
+    let levelClass = '';
+    if (total >= 90) {
+      level = '人上人';
+      levelClass = 'level-top';
+    } else if (total >= 80) {
+      level = '顶尖';
+      levelClass = 'level-ding';
+    } else if (total >= 60) {
+      level = '夯';
+      levelClass = 'level-hang';
+    } else if (total >= 40) {
+      level = 'NPC';
+      levelClass = 'level-npc';
+    } else {
+      level = '拉';
+      levelClass = 'level-rula';
+    }
+
+    document.getElementById('score-system').textContent = system;
+    document.getElementById('score-network').textContent = network;
+    document.getElementById('score-code').textContent = code;
+    document.getElementById('score-low').textContent = low;
+    document.getElementById('score-front').textContent = front;
+    document.getElementById('score-total').textContent = total;
+
+    elLevelText.className = 'level-text ' + levelClass;
+    elLevelText.textContent = '技术评级：' + level;
+    elScoreBox.style.display = 'block';
+  }
+
+  elPrev.onclick = () => { current--; render(); };
+  elNext.onclick = () => { current++; render(); };
+  elSubmitAll.onclick = calcScore;
+  elJumpBtn.onclick = () => {
+    const v = parseInt(elJumpInput.value);
+    if (v >=1 && v <=100) {
+      current = v - 1;
+      render();
+    }
+  };
+
+  render();
+</script>
+</body>
+</html>
