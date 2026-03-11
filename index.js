@@ -1,5 +1,5 @@
 let questions = [];
-const userAnswers = Array(100).fill(null);
+let userAnswers = [];
 let current = 0;
 
 const elCurrentNum = document.getElementById('current-num');
@@ -18,6 +18,7 @@ const elLevelText = document.getElementById('level-text');
     try {
         const response = await fetch('questions.json');
         questions = await response.json();
+        userAnswers = Array(questions.length).fill(null);
         render();
     } catch (error) {
         console.error("题库加载失败:", error);
@@ -122,7 +123,7 @@ elNext.onclick = () => {
 };
 
 elSubmitAll.onclick = () => {
-    const remaining = 100 - userAnswers.filter(x => x !== null).length;
+    const remaining = questions.length - userAnswers.filter(x => x !== null).length;
     if (remaining > 0) {
         if (confirm(`还有 ${remaining} 道题未完成，确定要交卷吗？`)) {
             calcScore();
@@ -134,10 +135,10 @@ elSubmitAll.onclick = () => {
 
 elJumpBtn.onclick = () => {
     const val = parseInt(elJumpInput.value);
-    if (val >= 1 && val <= 100) {
+    if (val >= 1 && val <= questions.length) {
         current = val - 1;
         render();
     } else {
-        alert("请输入 1 到 100 之间的题号");
+        alert(`请输入 1 到 ${questions.length} 之间的题号`);
     }
 };
