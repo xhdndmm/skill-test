@@ -5,7 +5,7 @@
   { "type": "basic", "title": "ASCII 编码中，字符 'A' 对应的十进制值是？", "options": ["48", "65", "97", "127"], "answer": 1 },
   { "type": "basic", "title": "位（bit）和字节（Byte）的换算关系是？", "options": ["1 Byte = 4 bits", "1 Byte = 8 bits", "1 Byte = 10 bits", "1 Byte = 16 bits"], "answer": 1 },
   { "type": "basic", "title": "什么是递归？", "options": ["循环遍历数组", "函数直接或间接调用自身", "多线程并行执行", "数据加密算法"], "answer": 1 },
-  { "type": "basic", "title": "1KB 等于多少字节？", "options": ["1000", "1024", "100", "2048"], "answer": 1 },
+  { "type": "basic", "title": "1KB 等于多少字节？", "options": ["1000", "1024", "100", "2048"], "answer": 0 },
   { "type": "basic", "title": "在布尔代数中，A AND (NOT A) 的结果永远是？", "options": ["True", "False", "取决于A", "None"], "answer": 1 },
   { "type": "basic", "title": "下列哪种排序算法在最坏情况下时间复杂度为 O(n^2)？", "options": ["归并排序", "堆排序", "快速排序", "以上都是"], "answer": 2 },
   { "type": "basic", "title": "什么是“高内聚低耦合”？", "options": ["代码越短越好", "模块内部联系紧密，模块间依赖低", "所有功能写在一个函数里", "增加代码冗余度"], "answer": 1 },
