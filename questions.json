@@ -102,4 +102,5 @@
   { "type": "solve", "title": "Windows 遇到“蓝屏 (BSOD)”，最关键的信息是？", "options": ["笑脸图标", "错误代码 (如 0x000000...) ", "开机时间", "用户名称"], "answer": 1 },
   { "type": "solve", "title": "发现服务器 CPU 占用 100%，应首先执行什么命令？", "options": ["rm -rf /", "top 或 htop", "reboot", "df -h"], "answer": 1 },
   { "type": "solve", "title": "Git 冲突 (Conflict) 发生的原因通常是？", "options": ["网络断开", "多人修改了同一文件的同一部分", "硬盘空间不足", "文件名太长"], "answer": 1 },
-  { "type": "solve", "title": "确认系统可用内存不足导致程序出现“Out of Memory”时，哪项措施可直接缓解内存不足？", "options": ["增加交换空间或物理内存", "删除所有代码", "重启路由器", "关闭显示器"], "answer": 0 },
+  { "type": "solve", "title": "确认系统可用内存不足导致程序出现“Out of Memory”时，哪项措施可直接缓解内存不足？", "options": ["增加交换空间或物理内存", "删除所有代码", "重启路由器", "关闭显示器"], "answer": 0 }
+]
